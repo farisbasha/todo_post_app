@@ -3,7 +3,8 @@ import React from 'react'
 const Posts = () => {
   return (
     <div>
-      Posts section
+      Posts section <br/>
+      You should implement this
     </div>
   )
 }
