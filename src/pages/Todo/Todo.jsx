@@ -1,33 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import TodoItemCard from './components/TodoItemCard'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { getTodoData } from '../../redux/slices/todoSlice'
+
 
 const Todo = () => {
-    const [todoList, setTodoList] = useState([])
-    const [isError, setIsError] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+    const dispatch = useDispatch()
+    const todoState = useSelector(state => state.todo)
 
     useEffect(() => {
-        const getTodoData = async () =>{
-            try {
-                const response = await axios.get("https://json-placeholder.mock.beeceptor.com/todos",)
-                setTodoList(response.data)
-            } catch (error) {
-                setIsError(true)
-            }finally{
-                setIsLoading(false)
-            }
-        }
-
-        getTodoData()
+        dispatch(getTodoData())
     }, [])
 
 
-    if (isLoading) {
+    if (todoState.isLoading) {
         return <div>Loading...</div>
     }
 
-    if(isError){
+    if(todoState.isError){
         return <div>Something went wrong</div>
     }
 
@@ -35,7 +25,7 @@ const Todo = () => {
   return (
     <div className=' flex flex-col gap-3'>
         {
-            todoList.map((todo) => {
+            todoState.todoList.map((todo) => {
                 return <TodoItemCard key={todo.id} todo={todo} />
             })
         }
